@@ -51,3 +51,24 @@ Stage Summary:
 - Brand is now CIPHER everywhere (display + SEO + structured data)
 - Floating cursor removed; magnetic buttons & mouse parallax kept (separate effects)
 - Placeholder links now hello@cipher.build / github.com/cipher / linkedin.com/in/cipher — user should replace with real handles
+
+---
+Task ID: 4
+Agent: main
+Task: Add Rise & Restore client project + Kind Words testimonials + rework The Lab
+
+Work Log:
+- Browsed risenrestore.org: live homepage = registrar expiry panel, but real SPA intact via typo routes (/abot /program); extracted verified content (mission, programs, impact stats, nav, branding) from bundle + rendered pages
+- Captured real screenshot of /program page (1440x900) -> public/projects/risenrestore-{lg,sm}.webp (51K/22K)
+- site.ts: Project type + category/cta fields; added project 07 RISE & RESTORE FOUNDATION (client work treatment); replaced labEntries with 4 new experiments (LAB_001..004, tones exploring/concept/research/ongoing, dates, techNotes); added testimonials placeholder data (no fake quotes — template structure only)
+- selected-work.tsx: count /07, full-width md:col-span-12 feature card for 07, always-visible NONPROFIT·CLIENT WORK overlay badge (sm+), mobile inline royal chip, VIEW LIVE PROJECT CTA line with arrow motion, header copy updated
+- lab.tsx rewritten: 2x2 hairline grid (gap-px), LAB_ID mono ids, animated ping status dots, dates, tags, hover-expanding tech notes (sm:max-h-0 -> group-hover reveal; always visible on touch), 'SOME EXPERIMENTS SHIP...' footnote + SEE WHAT I'M BUILDING -> GitHub CTA
+- testimonials.tsx new: KIND WORDS eyebrow, editorial 7/5 asymmetric cards, typographic initials avatars, no ratings/photos/fake names; placed between Journey and Contact
+- journey.tsx stat 6 -> 7 (CountUp shows 07+)
+- Fixed mobile badge/frame-URL overlap (overlay sm+ only, inline chip on mobile)
+- Verified: tsc+eslint clean, CSSOM has group-hover:max-h-12 rule, no console/page errors, no overflow at 390px; screenshots desktop 1440 + mobile 390 for all new sections
+
+Stage Summary:
+- Three-tier narrative live: Selected Work (07, incl. client feature) / The Lab (4 experiments, no duplication)
+- Kind Words section ready — awaits real client quotes in site.ts testimonials[]
+- Note: risenrestore.org domain currently shows expiry panel; screenshot taken from intact /program route

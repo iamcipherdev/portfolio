@@ -5,6 +5,7 @@ import { About, Capabilities } from "@/components/portfolio/about-capabilities";
 import { Process, TechStack } from "@/components/portfolio/process-stack";
 import { Lab } from "@/components/portfolio/lab";
 import { Journey } from "@/components/portfolio/journey";
+import { Testimonials } from "@/components/portfolio/testimonials";
 import { Contact, Footer } from "@/components/portfolio/contact";
 
 export default function Home() {
@@ -26,6 +27,7 @@ export default function Home() {
         <TechStack />
         <Lab />
         <Journey />
+        <Testimonials />
         <Contact />
       </main>
       <Footer />

@@ -79,6 +79,7 @@ function ProjectCard({
 }) {
   const darkShot = project.name === "LETTER THAT NEVER SEND" || project.name === "QURAN GUARD";
   const interactive = !!project.url;
+  const isClientWork = !!project.category;
 
   const Wrapper = interactive ? "a" : "div";
   const linkProps = interactive
@@ -120,6 +121,15 @@ function ProjectCard({
             </div>
           )}
 
+          {/* category badge — client work, always visible (desktop: overlay / mobile: inline chip below) */}
+          {isClientWork ? (
+            <div
+              className="micro pointer-events-none absolute right-4 top-4 z-10 hidden rounded-full border border-white/20 bg-[#111111]/85 px-3 py-[7px] text-[#F5F3EE] backdrop-blur-sm sm:block"
+            >
+              {project.category}
+            </div>
+          ) : null}
+
           {/* hover index badge */}
           <div
             className="micro pointer-events-none absolute left-4 top-4 z-10 rounded-full bg-[#111111]/85 px-3 py-[7px] text-[#F5F3EE] opacity-0 backdrop-blur-sm transition-all duration-500 group-hover/card:opacity-100"
@@ -144,6 +154,13 @@ function ProjectCard({
               {project.description}
             </p>
             <ul className="mt-3 flex flex-wrap gap-x-2 gap-y-1.5" aria-label="Project tags">
+              {isClientWork ? (
+                <li
+                  className="micro rounded-full border border-[#4D6BFF]/40 px-[10px] py-[5px] text-[9px] text-[#4D6BFF] sm:hidden"
+                >
+                  {project.category}
+                </li>
+              ) : null}
               {project.tags.map((t) => (
                 <li
                   key={t}
@@ -153,6 +170,17 @@ function ProjectCard({
                 </li>
               ))}
             </ul>
+            {project.cta ? (
+              <span className="micro mt-4 inline-flex items-center gap-2 text-[#111111]">
+                {project.cta}
+                <span
+                  className="transition-transform duration-500 group-hover/card:translate-x-0.5 group-hover/card:-translate-y-0.5"
+                  aria-hidden
+                >
+                  ↗
+                </span>
+              </span>
+            ) : null}
           </div>
 
           {/* visit affordance */}
@@ -191,14 +219,13 @@ export function SelectedWork() {
             </p>
             <h2 id="work-heading" className="h-editorial text-4xl sm:text-6xl lg:text-7xl">
               Selected Work
-              <sup className="micro ml-3 align-super text-[#4D6BFF]">/ 06</sup>
+              <sup className="micro ml-3 align-super text-[#4D6BFF]">/ 07</sup>
             </h2>
           </Reveal>
           <Reveal delay={0.15} className="max-w-[32ch]">
             <p className="text-[13.5px] leading-relaxed text-[#777777] sm:text-sm">
-              Real products, live on the web — ordering flows, interactive
-              experiences, experiments and client work. Each one shipped, not
-              imagined.
+              Shipped products, interactive experiences and real-world client
+              work — each one live on the web, not imagined.
             </p>
           </Reveal>
         </div>
@@ -222,6 +249,11 @@ export function SelectedWork() {
           </div>
           <div className="md:col-span-5 lg:pt-24">
             <ProjectCard project={projects[5]} />
+          </div>
+
+          {/* 07 — full-width client feature */}
+          <div className="md:col-span-12">
+            <ProjectCard project={projects[6]} large />
           </div>
         </div>
 

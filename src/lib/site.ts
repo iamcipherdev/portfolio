@@ -27,6 +27,9 @@ export type Project = {
   image?: { lg: string; sm: string; alt: string };
   mockup?: "extension";
   year: string;
+  /* Client / real-world work treatment */
+  category?: string;
+  cta?: string;
 };
 
 export const projects: Project[] = [
@@ -112,56 +115,107 @@ export const projects: Project[] = [
     mockup: "extension",
     year: "2026",
   },
+  {
+    index: "07",
+    name: "RISE & RESTORE FOUNDATION",
+    description:
+      "A modern nonprofit digital experience designed to communicate the organization’s mission, initiatives and impact clearly.",
+    tags: ["WEB DEVELOPMENT", "UI/UX", "NONPROFIT"],
+    url: "https://risenrestore.org",
+    domain: "risenrestore.org",
+    image: {
+      lg: "/projects/risenrestore-lg.webp",
+      sm: "/projects/risenrestore-sm.webp",
+      alt: "Rise & Restore Foundation — nonprofit website with mission hero and program cards",
+    },
+    category: "NONPROFIT · CLIENT WORK",
+    cta: "VIEW LIVE PROJECT",
+    year: "2026",
+  },
 ];
 
-export const labEntries = [
+export type LabEntry = {
+  id: string; // LAB_001
+  name: string;
+  status: string;
+  tone: "exploring" | "concept" | "research" | "ongoing";
+  date: string;
+  note: string;
+  techNote: string; // revealed on hover (always visible on touch)
+  tags: string[];
+};
+
+export const labEntries: LabEntry[] = [
   {
-    index: "01",
-    name: "RECUROO",
-    note: "WhatsApp-first ordering for cafés — iterating on the loyalty loop.",
-    status: "LIVE",
-    tone: "live" as const,
-    year: "2026",
+    id: "LAB_001",
+    name: "LIVE CYBER THREAT INTELLIGENCE",
+    status: "EXPLORING",
+    tone: "exploring",
+    date: "SEP 2026",
+    note:
+      "Exploring how public threat intelligence feeds can be turned into useful, real-time security visualizations.",
+    techNote: "Public threat feeds → structured intelligence → visualization.",
+    tags: ["CYBERSECURITY", "DATA", "APIs"],
   },
   {
-    index: "02",
-    name: "HEARTSYNC",
-    note: "Real-time mini-games for long-distance couples. No sign-up, no downloads.",
-    status: "LIVE",
-    tone: "live" as const,
-    year: "2026",
+    id: "LAB_002",
+    name: "CYBERSECURITY AWARENESS GAME",
+    status: "CONCEPT",
+    tone: "concept",
+    date: "AUG 2026",
+    note:
+      "An interactive attack-and-defend experience designed to teach cybersecurity through decisions instead of lectures.",
+    techNote: "Decision-driven scenarios → learn by defending, not reading.",
+    tags: ["SECURITY", "GAME DESIGN", "INTERACTIVE"],
   },
   {
-    index: "03",
-    name: "QURAN GUARD",
-    note: "Browser extension for safer, more intentional browsing.",
-    status: "BUILDING",
-    tone: "building" as const,
-    year: "2026",
+    id: "LAB_003",
+    name: "AI SCREENSHOT MANAGER",
+    status: "RESEARCH",
+    tone: "research",
+    date: "JUL 2026",
+    note:
+      "Exploring a smarter way to organize screenshots using OCR, semantic search and AI-generated context.",
+    techNote: "OCR → semantic index → search by meaning, not filename.",
+    tags: ["AI", "OCR", "MOBILE"],
   },
   {
-    index: "04",
-    name: "WOH KHAT",
-    note: "An interactive writing experiment for words left unsaid.",
-    status: "LIVE",
-    tone: "live" as const,
-    year: "2025",
+    id: "LAB_004",
+    name: "AI PRODUCT EXPERIMENTS",
+    status: "ONGOING",
+    tone: "ongoing",
+    date: "SINCE JUN 2026",
+    note:
+      "Small experiments with AI APIs, agents, automation and interfaces that may eventually turn into full products.",
+    techNote: "APIs → agents → automation → product candidates.",
+    tags: ["AI", "AGENTS", "AUTOMATION"],
+  },
+];
+
+/*
+ * Testimonials — STRICT POLICY: no invented quotes, names, companies or ratings.
+ * The two entries below are structural placeholders in the exact card format.
+ * Replace `quote`, `name` and `role` with real, client-provided text before launch.
+ */
+export type Testimonial = {
+  quote: string;
+  name: string;
+  role: string;
+  meta: string;
+};
+
+export const testimonials: Testimonial[] = [
+  {
+    quote: "Actual client quote goes here.",
+    name: "CLIENT NAME",
+    role: "Role / Organization",
+    meta: "CLIENT WORK · 2026",
   },
   {
-    index: "05",
-    name: "CAMPUSLIFT",
-    note: "Campus mobility concept — exploring real ride-sharing needs.",
-    status: "EXPERIMENT",
-    tone: "experiment" as const,
-    year: "2025",
-  },
-  {
-    index: "06",
-    name: "CIPHER.PORTFOLIO",
-    note: "The site you're on — designed & built from scratch.",
-    status: "SHIPPED",
-    tone: "live" as const,
-    year: "2026",
+    quote: "Actual client quote goes here.",
+    name: "CLIENT NAME",
+    role: "Role / Organization",
+    meta: "CLIENT WORK · 2026",
   },
 ];
 

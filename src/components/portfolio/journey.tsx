@@ -53,7 +53,7 @@ const timeline = [
 ];
 
 const stats = [
-  { value: <CountUp target={6} suffix="+" />, label: "SELECTED PROJECTS" },
+  { value: <CountUp target={7} suffix="+" />, label: "SELECTED PROJECTS" },
   { value: "AI × WEB", label: "CORE FOCUS" },
   { value: "2026", label: "BUILDING YEAR" },
   { value: "PAKISTAN", label: "BASED IN" },
