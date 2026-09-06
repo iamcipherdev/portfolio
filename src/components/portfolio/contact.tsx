@@ -2,10 +2,40 @@
 
 import { Magnetic } from "./magnetic";
 import { Reveal, WordReveal, EASE } from "./reveal";
-import { site } from "@/lib/site";
+import type { SiteProfile } from "@/lib/site";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
+import { useState } from "react";
 
-export function Contact() {
+function CopyEmailButton({ email }: { email: string }) {
+  const [copied, setCopied] = useState(false);
+
+  async function copy(e: React.MouseEvent) {
+    e.preventDefault();
+    try {
+      await navigator.clipboard.writeText(email);
+      setCopied(true);
+      toast.success("EMAIL COPIED TO CLIPBOARD");
+      setTimeout(() => setCopied(false), 2000);
+    } catch {
+      toast.error("Could not copy — long-press to select.");
+    }
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={copy}
+      data-cursor="open"
+      data-cursor-label="COPY"
+      className="link-underline text-white/60 transition-colors duration-300 hover:text-white"
+    >
+      {copied ? "COPIED ✓" : "EMAIL"}
+    </button>
+  );
+}
+
+export function Contact({ profile }: { profile: SiteProfile }) {
   return (
     <section
       id="contact"
@@ -28,7 +58,7 @@ export function Contact() {
         className="text-outline pointer-events-none absolute -bottom-[4vw] left-1/2 -translate-x-1/2 select-none whitespace-nowrap text-[24vw] font-semibold leading-none tracking-[-0.04em]"
         aria-hidden
       >
-        CIPHER
+        {profile.displayName}
       </span>
 
       <div className="container-x relative flex flex-1 flex-col items-center justify-center py-24 text-center sm:py-32">
@@ -37,7 +67,7 @@ export function Contact() {
             <span className="relative inline-flex h-[7px] w-[7px]">
               <span className="soft-ping relative inline-flex h-full w-full rounded-full bg-[#4D6BFF]" />
             </span>
-            AVAILABLE FOR NEW PROJECTS
+            {profile.availabilityStatus.toUpperCase()}
           </p>
         </Reveal>
 
@@ -64,12 +94,12 @@ export function Contact() {
         <Reveal delay={0.42} className="mt-12">
           <Magnetic strength={0.35}>
             <motion.a
-              href={site.email}
+              href={`mailto:${profile.email}`}
               whileTap={{ scale: 0.97 }}
               transition={{ duration: 0.2, ease: EASE }}
               className="group inline-flex h-[60px] items-center justify-center gap-4 rounded-full bg-[#F5F3EE] px-9 text-[12px] font-mono font-medium uppercase tracking-[0.2em] text-[#111111] transition-colors duration-300 hover:bg-[#4D6BFF] hover:text-white sm:h-[66px] sm:px-11"
             >
-              Start a Conversation
+              {profile.contactCta}
               <span
                 className="transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
                 aria-hidden
@@ -83,19 +113,29 @@ export function Contact() {
         <Reveal delay={0.55} className="mt-12">
           <ul className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 font-mono text-[11px] uppercase tracking-[0.2em]">
             <li>
-              <a href={site.email} className="link-underline text-white/60 transition-colors duration-300 hover:text-white">
-                EMAIL
-              </a>
+              <CopyEmailButton email={profile.email} />
             </li>
             <li aria-hidden className="text-white/25">/</li>
             <li>
-              <a href={site.github} target="_blank" rel="noreferrer" className="link-underline text-white/60 transition-colors duration-300 hover:text-white">
+              <a
+                href={profile.githubUrl}
+                target="_blank"
+                rel="noreferrer"
+                data-cursor="open"
+                className="link-underline text-white/60 transition-colors duration-300 hover:text-white"
+              >
                 GITHUB
               </a>
             </li>
             <li aria-hidden className="text-white/25">/</li>
             <li>
-              <a href={site.linkedin} target="_blank" rel="noreferrer" className="link-underline text-white/60 transition-colors duration-300 hover:text-white">
+              <a
+                href={profile.linkedinUrl}
+                target="_blank"
+                rel="noreferrer"
+                data-cursor="open"
+                className="link-underline text-white/60 transition-colors duration-300 hover:text-white"
+              >
                 LINKEDIN
               </a>
             </li>
@@ -106,7 +146,7 @@ export function Contact() {
   );
 }
 
-export function Footer() {
+export function Footer({ profile }: { profile: SiteProfile }) {
   return (
     <footer className="relative border-t border-white/10 bg-[#111111] pb-[env(safe-area-inset-bottom)] text-[#F5F3EE]">
       <div className="container-x flex flex-col gap-8 py-10 sm:py-12">
@@ -115,9 +155,9 @@ export function Footer() {
             <a
               href="#top"
               className="flex items-baseline gap-[3px] text-2xl font-semibold tracking-[-0.02em]"
-              aria-label="Cipher — back to top"
+              aria-label={`${profile.displayName} — back to top`}
             >
-              CIPHER
+              {profile.displayName}
               <span className="inline-block h-[9px] w-[9px] rounded-[2.5px] bg-[#4D6BFF]" aria-hidden />
             </a>
             <p className="micro mt-3 text-white/40">AI × WEB DEVELOPER</p>
@@ -126,17 +166,32 @@ export function Footer() {
           <nav aria-label="Footer">
             <ul className="flex flex-wrap items-center gap-x-6 gap-y-3 font-mono text-[11px] uppercase tracking-[0.2em]">
               <li>
-                <a href={site.github} target="_blank" rel="noreferrer" className="link-underline text-white/60 transition-colors hover:text-white">
+                <a
+                  href={profile.githubUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  data-cursor="open"
+                  className="link-underline text-white/60 transition-colors hover:text-white"
+                >
                   GITHUB
                 </a>
               </li>
               <li>
-                <a href={site.linkedin} target="_blank" rel="noreferrer" className="link-underline text-white/60 transition-colors hover:text-white">
+                <a
+                  href={profile.linkedinUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  data-cursor="open"
+                  className="link-underline text-white/60 transition-colors hover:text-white"
+                >
                   LINKEDIN
                 </a>
               </li>
               <li>
-                <a href={site.email} className="link-underline text-white/60 transition-colors hover:text-white">
+                <a
+                  href={`mailto:${profile.email}`}
+                  className="link-underline text-white/60 transition-colors hover:text-white"
+                >
                   EMAIL
                 </a>
               </li>
@@ -145,7 +200,7 @@ export function Footer() {
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-6">
-          <p className="micro text-white/35">© 2026 CIPHER — ALL RIGHTS RESERVED</p>
+          <p className="micro text-white/35">© 2026 {profile.displayName} — ALL RIGHTS RESERVED</p>
           <a
             href="#top"
             className="micro link-underline flex items-center gap-2 text-white/50 transition-colors hover:text-white"

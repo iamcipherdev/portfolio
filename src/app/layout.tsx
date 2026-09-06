@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -106,7 +106,18 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
         {children}
-        <Toaster />
+        <Toaster
+          position="bottom-center"
+          toastOptions={{
+            style: {
+              borderRadius: "999px",
+              border: "1px solid #1111111f",
+              background: "#111111",
+              color: "#F5F3EE",
+              fontSize: "12.5px",
+            },
+          }}
+        />
       </body>
     </html>
   );

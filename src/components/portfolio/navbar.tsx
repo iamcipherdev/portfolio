@@ -8,7 +8,7 @@ import {
   useSpring,
   useMotionValueEvent,
 } from "framer-motion";
-import { navItems, site } from "@/lib/site";
+import { navItems, type SiteProfile } from "@/lib/site";
 import { Magnetic } from "./magnetic";
 import { EASE } from "./reveal";
 
@@ -20,7 +20,7 @@ function AvailabilityDot() {
   );
 }
 
-export function Navbar() {
+export function Navbar({ profile }: { profile: SiteProfile }) {
   const [scrolled, setScrolled] = useState(false);
   const [overDark, setOverDark] = useState(false);
   const [active, setActive] = useState<string>("");
@@ -146,7 +146,7 @@ export function Navbar() {
 
             <div className="micro hidden items-center gap-2 text-white/60 lg:flex" style={{ color: overDark ? "rgba(245,243,238,0.6)" : "#555555" }}>
               <AvailabilityDot />
-              AVAILABLE FOR WORK
+              {profile.availabilityStatus.toUpperCase()}
             </div>
           </div>
 
@@ -210,18 +210,30 @@ export function Navbar() {
               >
                 <div className="micro flex items-center gap-2 text-[#111111]">
                   <AvailabilityDot />
-                  AVAILABLE FOR WORK
+                  {profile.availabilityStatus.toUpperCase()}
                 </div>
                 <div className="micro flex items-center gap-3 text-[#777777]">
-                  <a href={site.github} target="_blank" rel="noreferrer" className="link-underline">
+                  <a
+                    href={profile.githubUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    data-cursor="open"
+                    className="link-underline"
+                  >
                     GITHUB
                   </a>
                   <span>/</span>
-                  <a href={site.linkedin} target="_blank" rel="noreferrer" className="link-underline">
+                  <a
+                    href={profile.linkedinUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    data-cursor="open"
+                    className="link-underline"
+                  >
                     LINKEDIN
                   </a>
                   <span>/</span>
-                  <a href={site.email} className="link-underline">
+                  <a href={`mailto:${profile.email}`} className="link-underline">
                     EMAIL
                   </a>
                 </div>

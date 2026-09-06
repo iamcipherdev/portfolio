@@ -72,3 +72,25 @@ Stage Summary:
 - Three-tier narrative live: Selected Work (07, incl. client feature) / The Lab (4 experiments, no duplication)
 - Kind Words section ready — awaits real client quotes in site.ts testimonials[]
 - Note: risenrestore.org domain currently shows expiry panel; screenshot taken from intact /program route
+
+---
+Task ID: 5
+Agent: main
+Task: Real CMS (/admin) + reconstructed testimonials + data-driven public site + animation upgrades + real links
+
+Work Log:
+- Prisma schema: AdminUser, Setting, Project, LabExperiment, Testimonial, Profile, MediaAsset; db pushed; scripts/seed.ts seeds 7 projects (incl. Rise & Restore), 4 lab experiments, 6 anonymous reconstructed testimonials, profile with real links, admin user
+- Auth: src/lib/auth.ts (scrypt password hash, HMAC session cookie 7d via Web Crypto), src/middleware.ts edge gate, (dash)/layout.tsx server verify, login rate limit; default credentials cipher/cipher2026 (changeable in Settings)
+- API: /api/admin/{auth/*, projects(+[id],reorder), lab(+[id],reorder), testimonials(+[id],reorder), profile, media(+[id]), password}; zod create/update schemas (update schemas default-free so PATCH never wipes); media upload = sharp→WebP max 1600px q82 into public/uploads, safe-delete refuses referenced assets
+- Admin UI (cream/ink/royal, portfolio design language): shell with sidebar+mobile drawer, Overview (live counts, no fake analytics), Projects/Lab/Testimonials managers (search, status badges, dnd-kit drag + up/down reorder, publish toggles, feature star, dialog editors with unsaved-changes guard), Profile form (skills JSON editor, Cmd+S), Media library (upload/copy/delete), Settings (password change + security notes)
+- Public site data-driven: page.tsx = async server component via src/lib/cms.ts getPublicData() (force-dynamic, SQLite <1ms, graceful fallback to site.ts statics); hero/headline/description/availability/location/contact CTA/about text/skills all from Profile; sections prop-driven
+- Testimonials rebuilt: CLIENT NOTES / 2026 eyebrow, disclosure note "CLIENT FEEDBACK — RECONSTRUCTED; wording is not verbatim", 6 anonymous cards (typographic initials avatars), per-card RECONSTRUCTED/VERIFIED chips, editorial 7/5 grid desktop + swipeable snap row mobile
+- Animations: custom cursor re-added (desktop-only via pointer:fine+hover:hover, reduced-motion off; dot+spring ring, VIEW on project cards, OPEN↗/COPY labels; body.has-custom-cursor hides native), SELECTED WORK masked line reveal + THE LAB word reveal, project cards lift+index shift+CTA arrow diagonal, large-card subtle scroll parallax (transform-only), staggered entrances, copy-email toast in contact
+- site.ts real links: iamcipher.dev@gmail.com / github.com/iamcipherdev / linkedin.com/in/cipherwebdev (favicon already C-arc, kept)
+- Fixed during build: zod .partial() + .default() wipe bug (dedicated update schemas), screenshots string→array on submit, useSyncExternalStore for fine-pointer hooks (react-hooks v6 rules), controlled SortableList, sonner toaster, Prisma log noise reduced
+- Verified: lint clean, tsc clean (src), curl auth+CRUD+reorder+upload+delete, browser E2E (login→create project→visible on public→delete), unpublish/republish reflects instantly, mobile 390px no overflow, mobile menu + mobile admin drawer, logout flow
+
+Stage Summary:
+- Portfolio is now a premium personal site + real lightweight CMS: all content in SQLite, managed at /admin, public site reads DB directly (no rebuild)
+- Testimonials are honest reconstructed samples; replace each via admin and mark VERIFIED
+- Note: admin default password cipher2026 — change in /admin/settings

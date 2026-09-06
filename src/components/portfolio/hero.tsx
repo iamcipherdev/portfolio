@@ -12,8 +12,31 @@ import {
 import { BrowserFrame } from "./browser-frame";
 import { Magnetic } from "./magnetic";
 import { WordReveal, EASE } from "./reveal";
+import type { SiteProfile } from "@/lib/site";
 
-export function Hero() {
+const DEFAULT_HEADLINE = "I build useful digital products with AI & the web.";
+
+/** Split the editable headline into up to 3 editorial lines. */
+function headlineLines(headline: string): string[] {
+  const trimmed = headline.trim();
+  if (trimmed === DEFAULT_HEADLINE) {
+    return ["I build useful", "digital products", "with AI & the web."];
+  }
+  const words = trimmed.split(/\s+/).filter(Boolean);
+  if (words.length <= 3) return [trimmed];
+  if (words.length <= 6) {
+    const mid = Math.ceil(words.length / 2);
+    return [words.slice(0, mid).join(" "), words.slice(mid).join(" ")];
+  }
+  const size = Math.ceil(words.length / 3);
+  return [
+    words.slice(0, size).join(" "),
+    words.slice(size, size * 2).join(" "),
+    words.slice(size * 2).join(" "),
+  ];
+}
+
+export function Hero({ profile }: { profile: SiteProfile }) {
   const reduce = useReducedMotion();
   const zone = useRef<HTMLDivElement>(null);
 
@@ -41,6 +64,8 @@ export function Hero() {
     my.set(0);
   }
 
+  const lines = headlineLines(profile.headline);
+
   return (
     <section
       id="top"
@@ -66,20 +91,22 @@ export function Hero() {
             className="micro mb-6 flex items-center gap-3 text-[#555555] sm:mb-8"
           >
             <span className="inline-block h-[6px] w-[6px] rotate-45 bg-[#4D6BFF]" aria-hidden />
-            AI × WEB DEVELOPER
+            {profile.availabilityStatus.toUpperCase()}
           </motion.p>
 
           <h1 className="h-editorial max-w-[13ch] text-[13.2vw] leading-[0.98] sm:text-[11vw] lg:text-[5.6vw] xl:text-[6vw]">
-            <WordReveal text="I build useful" delay={0.35} />
-            <br aria-hidden />
-            <WordReveal text="digital products" delay={0.45} className="block" />
-            <span className="block overflow-hidden">
-              <WordReveal
-                text="with AI & the web."
-                delay={0.55}
-                className="block text-[#777777]"
-              />
-            </span>
+            {lines.map((line, i) => {
+              const isLast = i === lines.length - 1;
+              return (
+                <span key={line} className="block overflow-hidden">
+                  <WordReveal
+                    text={line}
+                    delay={0.35 + i * 0.1}
+                    className={`block ${isLast && lines.length > 1 ? "text-[#777777]" : ""}`}
+                  />
+                </span>
+              );
+            })}
           </h1>
 
           <motion.p
@@ -88,8 +115,7 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.85, ease: EASE }}
             className="mt-7 max-w-[46ch] text-[15px] leading-relaxed text-[#555555] sm:text-base"
           >
-            I turn ideas, problems and experiments into functional, polished
-            digital experiences — from prototype to deployment.
+            {profile.heroDescription}
           </motion.p>
 
           <motion.div
@@ -193,7 +219,7 @@ export function Hero() {
                 <span className="relative flex h-[8px] w-[8px]">
                   <span className="soft-ping relative inline-flex h-full w-full rounded-full bg-[#4D6BFF]" />
                 </span>
-                <span className="micro text-[#111111]">Available for work</span>
+                <span className="micro text-[#111111]">{profile.availabilityStatus}</span>
               </motion.div>
             </motion.div>
           </div>
@@ -209,7 +235,7 @@ export function Hero() {
       >
         <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[#11111114] pt-4">
           <p className="micro text-[#777777]">
-            BASED IN PAKISTAN <span className="mx-1 text-[#4D6BFF]">·</span>{" "}
+            BASED IN {profile.location.toUpperCase()} <span className="mx-1 text-[#4D6BFF]">·</span>{" "}
             BUILDING IN 2026
           </p>
           <a href="#work" className="micro link-underline hidden items-center gap-2 text-[#111111] sm:flex">

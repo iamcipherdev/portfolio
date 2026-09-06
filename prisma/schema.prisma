@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,20 +7,111 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+/* ── Admin auth ─────────────────────────────── */
+model AdminUser {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
-model Post {
-  id        String   @id @default(cuid())
-  title     String
-  content   String?
-  published Boolean  @default(false)
-  authorId  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+/* ── Key/value settings (session secret etc.) ── */
+model Setting {
+  key   String @id
+  value String
+}
+
+/* ── Selected Work projects ─────────────────── */
+model Project {
+  id               String   @id @default(cuid())
+  projectNumber    String   @default("")
+  name             String
+  slug             String   @unique
+  shortDescription String
+  fullDescription  String   @default("")
+  category         String   @default("")
+  year             String   @default("")
+  status           String   @default("LIVE") // LIVE | IN DEVELOPMENT | ARCHIVED
+  technologies     String   @default("") // comma separated
+  liveUrl          String   @default("")
+  githubUrl        String   @default("")
+  domain           String   @default("") // browser-frame URL label
+  coverImage       String   @default("") // large screenshot path
+  coverImageSm     String   @default("") // small screenshot path (optional)
+  imageAlt         String   @default("")
+  screenshots      String   @default("[]") // JSON array of extra image urls
+  featured         Boolean  @default(false)
+  published        Boolean  @default(true)
+  displayOrder     Int      @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+/* ── The Lab experiments ────────────────────── */
+model LabExperiment {
+  id           String   @id @default(cuid())
+  experimentId String   @unique // LAB_001
+  title        String
+  description  String
+  status       String   @default("CONCEPT") // CONCEPT | RESEARCH | EXPLORING | BUILDING | LIVE | ARCHIVED
+  dateLabel    String   @default("") // SEP 2026
+  tags         String   @default("") // comma separated
+  url          String   @default("")
+  githubUrl    String   @default("")
+  coverVisual  String   @default("")
+  techNotes    String   @default("") // hover-revealed note
+  published    Boolean  @default(true)
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+/* ── Testimonials / client notes ────────────── */
+model Testimonial {
+  id             String   @id @default(cuid())
+  clientLabel    String // NONPROFIT CLIENT
+  role           String   @default("") // Organization Website
+  organization   String   @default("")
+  quote          String
+  avatar         String   @default("")
+  relatedProject String   @default("")
+  dateLabel      String   @default("") // CLIENT WORK · 2026
+  status         String   @default("RECONSTRUCTED") // RECONSTRUCTED | VERIFIED
+  published      Boolean  @default(true)
+  displayOrder   Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+/* ── Editable profile / site content ────────── */
+model Profile {
+  id                 String   @id @default("main")
+  displayName        String   @default("CIPHER")
+  headline           String   @default("I build useful digital products with AI & the web.")
+  heroDescription    String   @default("")
+  availabilityStatus String   @default("AVAILABLE FOR WORK")
+  location           String   @default("PAKISTAN")
+  aboutText          String   @default("")
+  aboutTextSecondary String   @default("")
+  email              String   @default("")
+  githubUrl          String   @default("")
+  linkedinUrl        String   @default("")
+  resumeUrl          String   @default("")
+  contactCta         String   @default("Start a Conversation")
+  skills             String   @default("[]") // JSON [{ label, items: [{ name, note }] }]
+  updatedAt          DateTime @updatedAt
+}
+
+/* ── Media library ──────────────────────────── */
+model MediaAsset {
+  id           String   @id @default(cuid())
+  filename     String
+  originalName String
+  url          String   @unique
+  mimeType     String
+  size         Int
+  width        Int      @default(0)
+  height       Int      @default(0)
+  createdAt    DateTime @default(now())
 }

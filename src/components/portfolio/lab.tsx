@@ -1,21 +1,25 @@
 "use client";
 
-import { Reveal } from "./reveal";
-import { labEntries, site, type LabEntry } from "@/lib/site";
+import { Reveal, WordReveal } from "./reveal";
+import type { LabEntry, LabTone, SiteProfile } from "@/lib/site";
 
 /* status chip tones (dark section) */
-const toneChip: Record<LabEntry["tone"], string> = {
+const toneChip: Record<LabTone, string> = {
   exploring: "border-[#4D6BFF]/40 text-[#8DA2FF]",
   concept: "border-white/15 text-white/50",
   research: "border-[#F5B83D]/30 text-[#F5C96B]",
-  ongoing: "border-[#3ECF6E]/30 text-[#5CE393]",
+  building: "border-[#3ECF6E]/30 text-[#5CE393]",
+  live: "border-[#3ECF6E]/50 text-[#7BF0AC]",
+  archived: "border-white/10 text-white/30",
 };
 
-const toneDot: Record<LabEntry["tone"], string> = {
+const toneDot: Record<LabTone, string> = {
   exploring: "bg-[#4D6BFF]",
   concept: "bg-white/40",
   research: "bg-[#F5B83D]",
-  ongoing: "bg-[#3ECF6E]",
+  building: "bg-[#3ECF6E]",
+  live: "bg-[#5CE393]",
+  archived: "bg-white/25",
 };
 
 /* animated status indicator — dot + soft ping */
@@ -87,7 +91,7 @@ function LabCard({ entry, index }: { entry: LabEntry; index: number }) {
   );
 }
 
-export function Lab() {
+export function Lab({ entries, profile }: { entries: LabEntry[]; profile: SiteProfile }) {
   return (
     <section
       id="lab"
@@ -115,7 +119,7 @@ export function Lab() {
               EXPERIMENTS / 2026
             </p>
             <h2 id="lab-heading" className="h-editorial text-5xl sm:text-7xl lg:text-8xl">
-              THE LAB
+              <WordReveal text="THE LAB" />
               <span
                 className="ml-4 inline-block h-3 w-3 animate-pulse rounded-[3px] bg-[#4D6BFF] align-baseline sm:h-4 sm:w-4"
                 aria-hidden
@@ -133,7 +137,7 @@ export function Lab() {
 
         {/* experimental grid — hairline dividers via gap-px */}
         <div className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 md:grid-cols-2">
-          {labEntries.map((entry, i) => (
+          {entries.map((entry, i) => (
             <LabCard key={entry.id} entry={entry} index={i} />
           ))}
         </div>
@@ -145,9 +149,10 @@ export function Lab() {
               SOME EXPERIMENTS SHIP. SOME FAIL. BOTH TEACH ME SOMETHING.
             </p>
             <a
-              href={site.github}
+              href={profile.githubUrl}
               target="_blank"
               rel="noreferrer"
+              data-cursor="open"
               className="micro group inline-flex h-12 items-center gap-3 rounded-full border border-white/15 px-6 text-white/70 transition-colors duration-300 hover:border-white/40 hover:text-white"
             >
               SEE WHAT I&apos;M BUILDING

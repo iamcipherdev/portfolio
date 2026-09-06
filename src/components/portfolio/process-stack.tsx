@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Reveal, WordReveal } from "./reveal";
-import { processSteps, stackGroups } from "@/lib/site";
+import { processSteps, type SiteProfile, type StackGroup } from "@/lib/site";
 
 /* ── PROCESS ── */
 export function Process() {
@@ -87,7 +87,7 @@ export function Process() {
 }
 
 /* ── TECH STACK ── */
-export function TechStack() {
+export function TechStack({ skills }: { skills: StackGroup[] }) {
   const [activeItem, setActiveItem] = useState<string | null>(null);
 
   return (
@@ -114,7 +114,7 @@ export function TechStack() {
         </div>
 
         <div className="grid grid-cols-1 gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
-          {stackGroups.map((group, gi) => (
+          {skills.map((group, gi) => (
             <Reveal key={group.label} delay={gi * 0.07}>
               <div className="border-t-2 border-[#111111] pt-5">
                 <p className="micro mb-5 flex items-center justify-between text-[#111111]">

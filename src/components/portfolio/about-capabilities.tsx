@@ -1,11 +1,11 @@
 "use client";
 
 import { Reveal, WordReveal } from "./reveal";
-import { capabilities } from "@/lib/site";
+import { capabilities, type SiteProfile } from "@/lib/site";
 import { ArrowUpRight } from "lucide-react";
 
 /* ── ABOUT ── */
-export function About() {
+export function About({ profile }: { profile: SiteProfile }) {
   return (
     <section
       id="about"
@@ -36,17 +36,13 @@ export function About() {
             <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-12">
               <Reveal delay={0.1} className="md:col-span-7">
                 <p className="max-w-[58ch] text-[15px] leading-[1.85] text-[#3d3d3d] sm:text-base">
-                  I&apos;m Cipher, an AI × Web Developer focused on building modern
-                  digital products, experiments and useful tools. I enjoy taking
-                  an idea from a rough concept to something real, interactive and
-                  deployable — designing the structure, building the product and
-                  shipping it to the live web.
+                  {profile.aboutText}
                 </p>
-                <p className="mt-5 max-w-[58ch] text-[15px] leading-[1.85] text-[#777777] sm:text-base">
-                  The interesting part is rarely the code alone — it&apos;s the
-                  translation: from a vague problem to a clear experience people
-                  can actually use.
-                </p>
+                {profile.aboutTextSecondary ? (
+                  <p className="mt-5 max-w-[58ch] text-[15px] leading-[1.85] text-[#777777] sm:text-base">
+                    {profile.aboutTextSecondary}
+                  </p>
+                ) : null}
               </Reveal>
 
               {/* metadata */}
@@ -54,7 +50,7 @@ export function About() {
                 <dl className="grid grid-cols-3 gap-6 border-t border-[#11111114] pt-6 md:grid-cols-1 md:gap-0">
                   <div className="md:flex md:items-baseline md:justify-between md:border-b md:border-[#11111114] md:py-4">
                     <dt className="micro mb-1 text-[#999999] md:mb-0">BASED IN</dt>
-                    <dd className="text-sm font-medium tracking-[0.02em]">Pakistan</dd>
+                    <dd className="text-sm font-medium tracking-[0.02em]">{profile.location.replace(/\b\w/g, (c) => c.toUpperCase())}</dd>
                   </div>
                   <div className="md:flex md:items-baseline md:justify-between md:border-b md:border-[#11111114] md:py-4">
                     <dt className="micro mb-1 text-[#999999] md:mb-0">FOCUS</dt>

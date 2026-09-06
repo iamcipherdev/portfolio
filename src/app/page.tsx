@@ -7,8 +7,17 @@ import { Lab } from "@/components/portfolio/lab";
 import { Journey } from "@/components/portfolio/journey";
 import { Testimonials } from "@/components/portfolio/testimonials";
 import { Contact, Footer } from "@/components/portfolio/contact";
+import { Cursor } from "@/components/portfolio/cursor";
+import { getPublicData } from "@/lib/cms";
 
-export default function Home() {
+/* Content is served from the CMS database (managed via /admin).
+   Direct SQLite reads are sub-millisecond; dynamic rendering keeps
+   admin edits live without any rebuild. */
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const { projects, lab, testimonials, profile } = await getPublicData();
+
   return (
     <>
       <a
@@ -17,20 +26,21 @@ export default function Home() {
       >
         Skip to work
       </a>
-      <Navbar />
+      <Cursor />
+      <Navbar profile={profile} />
       <main className="flex min-h-screen flex-col">
-        <Hero />
-        <SelectedWork />
-        <About />
+        <Hero profile={profile} />
+        <SelectedWork projects={projects} />
+        <About profile={profile} />
         <Capabilities />
         <Process />
-        <TechStack />
-        <Lab />
+        <TechStack skills={profile.skills} />
+        <Lab entries={lab} profile={profile} />
         <Journey />
-        <Testimonials />
-        <Contact />
+        <Testimonials testimonials={testimonials} />
+        <Contact profile={profile} />
       </main>
-      <Footer />
+      <Footer profile={profile} />
     </>
   );
 }

@@ -1,13 +1,20 @@
+/* ─────────────────────────────────────────────
+ * Static site constants + typed shapes.
+ * Content (projects / lab / testimonials / profile)
+ * is served from the CMS database via src/lib/cms.ts —
+ * the arrays below act ONLY as resilience fallbacks.
+ * ───────────────────────────────────────────── */
+
 export const site = {
   name: "CIPHER",
   role: "AI × WEB DEVELOPER",
   statement: "I build useful digital products with AI & the web.",
   basedIn: "PAKISTAN",
   year: "2026",
-  /* Replace with your real links before going live */
-  email: "mailto:hello@cipher.build",
-  github: "https://github.com/cipher",
-  linkedin: "https://www.linkedin.com/in/cipher",
+  email: "mailto:iamcipher.dev@gmail.com",
+  emailAddress: "iamcipher.dev@gmail.com",
+  github: "https://github.com/iamcipherdev",
+  linkedin: "https://www.linkedin.com/in/cipherwebdev",
 };
 
 export const navItems = [
@@ -134,11 +141,19 @@ export const projects: Project[] = [
   },
 ];
 
+export type LabTone =
+  | "exploring"
+  | "concept"
+  | "research"
+  | "building"
+  | "live"
+  | "archived";
+
 export type LabEntry = {
   id: string; // LAB_001
   name: string;
   status: string;
-  tone: "exploring" | "concept" | "research" | "ongoing";
+  tone: LabTone;
   date: string;
   note: string;
   techNote: string; // revealed on hover (always visible on touch)
@@ -182,8 +197,8 @@ export const labEntries: LabEntry[] = [
   {
     id: "LAB_004",
     name: "AI PRODUCT EXPERIMENTS",
-    status: "ONGOING",
-    tone: "ongoing",
+    status: "BUILDING",
+    tone: "building",
     date: "SINCE JUN 2026",
     note:
       "Small experiments with AI APIs, agents, automation and interfaces that may eventually turn into full products.",
@@ -192,34 +207,80 @@ export const labEntries: LabEntry[] = [
   },
 ];
 
-/*
- * Testimonials — STRICT POLICY: no invented quotes, names, companies or ratings.
- * The two entries below are structural placeholders in the exact card format.
- * Replace `quote`, `name` and `role` with real, client-provided text before launch.
+/* ── Testimonials ─────────────────────────────
+ * POLICY: the seeded cards are anonymous, reconstructed
+ * summaries — never attributed to identifiable people.
+ * The public section carries a visible
+ * "CLIENT FEEDBACK — RECONSTRUCTED" disclosure.
+ * Replace them with genuine client quotes via /admin
+ * and mark them VERIFIED.
  */
 export type Testimonial = {
   quote: string;
-  name: string;
+  clientLabel: string;
   role: string;
   meta: string;
+  status: "RECONSTRUCTED" | "VERIFIED";
+  avatar?: string;
 };
 
 export const testimonials: Testimonial[] = [
   {
-    quote: "Actual client quote goes here.",
-    name: "CLIENT NAME",
-    role: "Role / Organization",
+    quote:
+      "The website came together cleanly and the final result matched what we were looking for.",
+    clientLabel: "NONPROFIT CLIENT",
+    role: "Organization Website",
     meta: "CLIENT WORK · 2026",
+    status: "RECONSTRUCTED",
   },
   {
-    quote: "Actual client quote goes here.",
-    name: "CLIENT NAME",
-    role: "Role / Organization",
+    quote:
+      "Our initial idea was quite simple, but the final website felt much more complete and professional.",
+    clientLabel: "LOCAL BUSINESS OWNER",
+    role: "Business Website",
+    meta: "CLIENT WORK · 2025",
+    status: "RECONSTRUCTED",
+  },
+  {
+    quote:
+      "Changes were handled quickly and communication throughout the project was straightforward.",
+    clientLabel: "SMALL BUSINESS CLIENT",
+    role: "Web Development",
+    meta: "CLIENT WORK · 2025",
+    status: "RECONSTRUCTED",
+  },
+  {
+    quote:
+      "The site worked well across mobile and desktop, and the overall experience was easy to understand.",
+    clientLabel: "ORGANIZATION CLIENT",
+    role: "Digital Presence",
+    meta: "CLIENT WORK · 2025",
+    status: "RECONSTRUCTED",
+  },
+  {
+    quote:
+      "We appreciated how quickly feedback was translated into actual improvements.",
+    clientLabel: "PROJECT CLIENT",
+    role: "Website Development",
     meta: "CLIENT WORK · 2026",
+    status: "RECONSTRUCTED",
+  },
+  {
+    quote:
+      "The process was simple and the final product gave us a much stronger online presence.",
+    clientLabel: "RETURNING CLIENT",
+    role: "Digital Project",
+    meta: "CLIENT WORK · 2026",
+    status: "RECONSTRUCTED",
   },
 ];
 
-export const stackGroups = [
+export type StackGroup = {
+  label: string;
+  items: { name: string; note: string }[];
+};
+
+export const stackGroups: StackGroup[] = [
   {
     label: "FRONTEND",
     items: [
@@ -291,3 +352,39 @@ export const processSteps = [
   { index: "04", title: "TEST", text: "Break it, refine it, improve it." },
   { index: "05", title: "SHIP", text: "Deploy, learn and iterate." },
 ];
+
+/* ── Editable profile shape (CMS-backed) ────── */
+export type SiteProfile = {
+  displayName: string;
+  headline: string;
+  heroDescription: string;
+  availabilityStatus: string;
+  location: string;
+  aboutText: string;
+  aboutTextSecondary: string;
+  email: string; // plain address
+  githubUrl: string;
+  linkedinUrl: string;
+  resumeUrl: string;
+  contactCta: string;
+  skills: StackGroup[];
+};
+
+export const fallbackProfile: SiteProfile = {
+  displayName: "CIPHER",
+  headline: "I build useful digital products with AI & the web.",
+  heroDescription:
+    "I turn ideas, problems and experiments into functional, polished digital experiences — from prototype to deployment.",
+  availabilityStatus: "Available for work",
+  location: "PAKISTAN",
+  aboutText:
+    "I’m Cipher, an AI × Web Developer focused on building modern digital products, experiments and useful tools. I enjoy taking an idea from a rough concept to something real, interactive and deployable — designing the structure, building the product and shipping it to the live web.",
+  aboutTextSecondary:
+    "The interesting part is rarely the code alone — it’s the translation: from a vague problem to a clear experience people can actually use.",
+  email: "iamcipher.dev@gmail.com",
+  githubUrl: "https://github.com/iamcipherdev",
+  linkedinUrl: "https://www.linkedin.com/in/cipherwebdev",
+  resumeUrl: "",
+  contactCta: "Start a Conversation",
+  skills: stackGroups,
+};

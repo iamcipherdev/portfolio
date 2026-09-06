@@ -1,9 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { Reveal } from "./reveal";
+import { useRef, useSyncExternalStore } from "react";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { Reveal, EASE } from "./reveal";
 import { BrowserFrame } from "./browser-frame";
-import { projects, type Project } from "@/lib/site";
+import type { Project } from "@/lib/site";
 
 /* ── Quran Guard: honest CSS product mockup (extension popup) ── */
 function ExtensionMockup() {
@@ -67,15 +69,73 @@ function ExtensionMockup() {
   );
 }
 
+/* ── Restrained scroll parallax for large visuals ── */
+function useFinePointer(): boolean {
+  return useSyncExternalStore(
+    (cb) => {
+      const mq = window.matchMedia("(hover: hover) and (pointer: fine)");
+      mq.addEventListener("change", cb);
+      return () => mq.removeEventListener("change", cb);
+    },
+    () => window.matchMedia("(hover: hover) and (pointer: fine)").matches,
+    () => false
+  );
+}
+
+function ParallaxImage({
+  src,
+  alt,
+  sizes,
+  priority = false,
+}: {
+  src: string;
+  alt: string;
+  sizes: string;
+  priority?: boolean;
+}) {
+  const reduce = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+  const finePointer = useFinePointer();
+
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], ["-2.5%", "2.5%"]);
+  const active = !reduce && finePointer;
+
+  return (
+    <div ref={ref} className="relative aspect-[16/10] overflow-hidden">
+      <motion.div
+        className="absolute -inset-y-[4%] inset-x-0 will-change-transform"
+        style={active ? { y } : undefined}
+      >
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          loading={priority ? undefined : "lazy"}
+          sizes={sizes}
+          className="object-cover object-top transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/card:scale-[1.035]"
+        />
+      </motion.div>
+      {/* editorial crop veil */}
+      <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-black/[0.06] to-transparent opacity-0 transition-opacity duration-700 group-hover/card:opacity-100" />
+    </div>
+  );
+}
+
 /* ── Project card ── */
 function ProjectCard({
   project,
   large,
   offset = false,
+  delay = 0,
 }: {
   project: Project;
   large?: boolean;
   offset?: boolean;
+  delay?: number;
 }) {
   const darkShot = project.name === "LETTER THAT NEVER SEND" || project.name === "QURAN GUARD";
   const interactive = !!project.url;
@@ -87,33 +147,41 @@ function ProjectCard({
     : {};
 
   return (
-    <Reveal
-      className={`group/card ${offset ? "lg:mt-20" : ""}`}
-      delay={0.05}
-    >
+    <Reveal className={`group/card ${offset ? "lg:mt-20" : ""}`} delay={delay}>
       <Wrapper
         {...linkProps}
         {...(interactive
-          ? { "data-cursor": "hover", "aria-label": `${project.name} — visit live site` }
+          ? {
+              "data-cursor": "view",
+              "data-cursor-label": "VIEW",
+              "aria-label": `${project.name} — visit live site`,
+            }
           : {})}
-        className="block outline-offset-8"
+        className="block outline-offset-8 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/card:-translate-y-1.5"
       >
         {/* visual */}
-        <div className="relative overflow-hidden rounded-xl transition-shadow duration-500 group-hover/card:shadow-[0_36px_80px_-32px_rgba(17,17,17,0.4)]">
+        <div className="relative overflow-hidden rounded-xl transition-shadow duration-500 group-hover/card:shadow-[0_44px_90px_-36px_rgba(17,17,17,0.45)]">
           {project.image ? (
             <BrowserFrame url={project.domain} dark={darkShot}>
-              <div className="relative aspect-[16/10] overflow-hidden">
-                <Image
+              {large ? (
+                <ParallaxImage
                   src={project.image.lg}
                   alt={project.image.alt}
-                  fill
-                  loading="lazy"
                   sizes={large ? "(max-width: 1024px) 92vw, 56vw" : "(max-width: 1024px) 92vw, 40vw"}
-                  className="object-cover object-top transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/card:scale-[1.045]"
                 />
-                {/* editorial crop veil */}
-                <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-black/[0.06] to-transparent opacity-0 transition-opacity duration-700 group-hover/card:opacity-100" />
-              </div>
+              ) : (
+                <div className="relative aspect-[16/10] overflow-hidden">
+                  <Image
+                    src={project.image.lg}
+                    alt={project.image.alt}
+                    fill
+                    loading="lazy"
+                    sizes={large ? "(max-width: 1024px) 92vw, 56vw" : "(max-width: 1024px) 92vw, 40vw"}
+                    className="object-cover object-top transition-transform duration-[900ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/card:scale-[1.04]"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-black/[0.06] to-transparent opacity-0 transition-opacity duration-700 group-hover/card:opacity-100" />
+                </div>
+              )}
             </BrowserFrame>
           ) : (
             <div className="overflow-hidden rounded-xl border border-[#11111114] shadow-[0_24px_60px_-24px_rgba(17,17,17,0.28)]">
@@ -143,14 +211,18 @@ function ProjectCard({
         <div className="mt-5 flex items-start justify-between gap-4">
           <div className="min-w-0">
             <div className="mb-[6px] flex items-baseline gap-3">
-              <span className="micro text-[#4D6BFF]">{project.index}</span>
+              <span
+                className="micro text-[#4D6BFF] transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/card:translate-x-1.5"
+              >
+                {project.index}
+              </span>
               <h3
                 className={`h-editorial ${large ? "text-xl sm:text-2xl" : "text-lg sm:text-xl"}`}
               >
                 {project.name}
               </h3>
             </div>
-            <p className="max-w-[52ch] text-[13.5px] leading-relaxed text-[#777777] sm:text-sm">
+            <p className="max-w-[52ch] text-[13.5px] leading-relaxed text-[#777777] transition-colors duration-500 group-hover/card:text-[#555555] sm:text-sm">
               {project.description}
             </p>
             <ul className="mt-3 flex flex-wrap gap-x-2 gap-y-1.5" aria-label="Project tags">
@@ -174,7 +246,7 @@ function ProjectCard({
               <span className="micro mt-4 inline-flex items-center gap-2 text-[#111111]">
                 {project.cta}
                 <span
-                  className="transition-transform duration-500 group-hover/card:translate-x-0.5 group-hover/card:-translate-y-0.5"
+                  className="transition-transform duration-500 group-hover/card:translate-x-1 group-hover/card:-translate-y-1"
                   aria-hidden
                 >
                   ↗
@@ -206,7 +278,18 @@ function ProjectCard({
 }
 
 /* ── Section ── */
-export function SelectedWork() {
+export function SelectedWork({ projects }: { projects: Project[] }) {
+  /* editorial layout pattern for the grid, repeating safely for any count */
+  const pattern: { span: string; large?: boolean; offset?: boolean }[] = [
+    { span: "md:col-span-7", large: true },
+    { span: "md:col-span-5 lg:pt-24" },
+    { span: "md:col-span-5" },
+    { span: "md:col-span-7 lg:-mt-6", large: true },
+    { span: "md:col-span-7", large: true },
+    { span: "md:col-span-5 lg:pt-24" },
+    { span: "md:col-span-12", large: true },
+  ];
+
   return (
     <section id="work" aria-labelledby="work-heading" className="relative py-20 sm:py-28 lg:py-36">
       <div className="container-x">
@@ -218,8 +301,29 @@ export function SelectedWork() {
               PORTFOLIO
             </p>
             <h2 id="work-heading" className="h-editorial text-4xl sm:text-6xl lg:text-7xl">
-              Selected Work
-              <sup className="micro ml-3 align-super text-[#4D6BFF]">/ 07</sup>
+              <span className="block overflow-hidden pb-[0.08em] -mb-[0.08em]">
+                <motion.span
+                  initial={{ y: "110%" }}
+                  whileInView={{ y: "0%" }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.9, ease: EASE }}
+                  className="inline-block will-change-transform"
+                >
+                  Selected
+                </motion.span>
+              </span>
+              <span className="block overflow-hidden pb-[0.08em] -mb-[0.08em]">
+                <motion.span
+                  initial={{ y: "110%" }}
+                  whileInView={{ y: "0%" }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.9, delay: 0.08, ease: EASE }}
+                  className="inline-block will-change-transform"
+                >
+                  Work
+                  <sup className="micro ml-3 align-super text-[#4D6BFF]">/ {String(projects.length).padStart(2, "0")}</sup>
+                </motion.span>
+              </span>
             </h2>
           </Reveal>
           <Reveal delay={0.15} className="max-w-[32ch]">
@@ -230,31 +334,21 @@ export function SelectedWork() {
           </Reveal>
         </div>
 
-        {/* asymmetric editorial grid */}
+        {/* asymmetric editorial grid — staggered entrances */}
         <div className="grid grid-cols-1 gap-x-8 gap-y-14 md:grid-cols-12 lg:gap-y-8">
-          <div className="md:col-span-7">
-            <ProjectCard project={projects[0]} large />
-          </div>
-          <div className="md:col-span-5 lg:pt-24">
-            <ProjectCard project={projects[1]} />
-          </div>
-          <div className="md:col-span-5">
-            <ProjectCard project={projects[2]} />
-          </div>
-          <div className="md:col-span-7 lg:-mt-6">
-            <ProjectCard project={projects[3]} large />
-          </div>
-          <div className="md:col-span-7">
-            <ProjectCard project={projects[4]} large />
-          </div>
-          <div className="md:col-span-5 lg:pt-24">
-            <ProjectCard project={projects[5]} />
-          </div>
-
-          {/* 07 — full-width client feature */}
-          <div className="md:col-span-12">
-            <ProjectCard project={projects[6]} large />
-          </div>
+          {projects.map((project, i) => {
+            const slot = pattern[i % pattern.length];
+            return (
+              <div key={`${project.index}-${project.name}`} className={slot.span}>
+                <ProjectCard
+                  project={project}
+                  large={slot.large}
+                  offset={slot.offset}
+                  delay={(i % 2) * 0.08}
+                />
+              </div>
+            );
+          })}
         </div>
 
         {/* footnote */}
