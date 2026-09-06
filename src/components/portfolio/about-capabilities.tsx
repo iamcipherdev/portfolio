@@ -36,7 +36,7 @@ export function About() {
             <div className="mt-10 grid grid-cols-1 gap-10 md:grid-cols-12">
               <Reveal delay={0.1} className="md:col-span-7">
                 <p className="max-w-[58ch] text-[15px] leading-[1.85] text-[#3d3d3d] sm:text-base">
-                  I&apos;m Lunar, an AI × Web Developer focused on building modern
+                  I&apos;m Cipher, an AI × Web Developer focused on building modern
                   digital products, experiments and useful tools. I enjoy taking
                   an idea from a rough concept to something real, interactive and
                   deployable — designing the structure, building the product and

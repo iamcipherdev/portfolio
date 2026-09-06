@@ -108,9 +108,9 @@ export function Navbar() {
           <a
             href="#top"
             className="group flex items-baseline gap-[3px] text-[17px] font-semibold tracking-[-0.02em]"
-            aria-label="Lunar — back to top"
+            aria-label="Cipher — back to top"
           >
-            LUNAR
+            CIPHER
             <span
               className="inline-block h-[7px] w-[7px] rounded-[2px] bg-[#4D6BFF] transition-transform duration-500 group-hover:rotate-45"
             />

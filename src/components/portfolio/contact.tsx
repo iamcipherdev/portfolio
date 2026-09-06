@@ -28,7 +28,7 @@ export function Contact() {
         className="text-outline pointer-events-none absolute -bottom-[4vw] left-1/2 -translate-x-1/2 select-none whitespace-nowrap text-[24vw] font-semibold leading-none tracking-[-0.04em]"
         aria-hidden
       >
-        LUNAR
+        CIPHER
       </span>
 
       <div className="container-x relative flex flex-1 flex-col items-center justify-center py-24 text-center sm:py-32">
@@ -115,9 +115,9 @@ export function Footer() {
             <a
               href="#top"
               className="flex items-baseline gap-[3px] text-2xl font-semibold tracking-[-0.02em]"
-              aria-label="Lunar — back to top"
+              aria-label="Cipher — back to top"
             >
-              LUNAR
+              CIPHER
               <span className="inline-block h-[9px] w-[9px] rounded-[2.5px] bg-[#4D6BFF]" aria-hidden />
             </a>
             <p className="micro mt-3 text-white/40">AI × WEB DEVELOPER</p>
@@ -145,7 +145,7 @@ export function Footer() {
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-6">
-          <p className="micro text-white/35">© 2026 LUNAR — ALL RIGHTS RESERVED</p>
+          <p className="micro text-white/35">© 2026 CIPHER — ALL RIGHTS RESERVED</p>
           <a
             href="#top"
             className="micro link-underline flex items-center gap-2 text-white/50 transition-colors hover:text-white"

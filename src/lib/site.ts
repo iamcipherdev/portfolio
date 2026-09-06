@@ -1,13 +1,13 @@
 export const site = {
-  name: "LUNAR",
+  name: "CIPHER",
   role: "AI × WEB DEVELOPER",
   statement: "I build useful digital products with AI & the web.",
   basedIn: "PAKISTAN",
   year: "2026",
   /* Replace with your real links before going live */
-  email: "mailto:hello@lunar.build",
-  github: "https://github.com/lunar",
-  linkedin: "https://www.linkedin.com/in/lunar",
+  email: "mailto:hello@cipher.build",
+  github: "https://github.com/cipher",
+  linkedin: "https://www.linkedin.com/in/cipher",
 };
 
 export const navItems = [
@@ -157,7 +157,7 @@ export const labEntries = [
   },
   {
     index: "06",
-    name: "LUNAR.PORTFOLIO",
+    name: "CIPHER.PORTFOLIO",
     note: "The site you're on — designed & built from scratch.",
     status: "SHIPPED",
     tone: "live" as const,

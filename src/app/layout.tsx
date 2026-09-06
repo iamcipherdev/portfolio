@@ -15,15 +15,15 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
-const siteUrl = "https://lunar.build";
+const siteUrl = "https://cipher.build";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Lunar — AI × Web Developer",
+  title: "Cipher — AI × Web Developer",
   description:
-    "Lunar is an AI × Web Developer building modern digital products, web experiences and experiments.",
+    "Cipher is an AI × Web Developer building modern digital products, web experiences and experiments.",
   keywords: [
-    "Lunar",
+    "Cipher",
     "AI developer",
     "web developer",
     "product developer",
@@ -31,24 +31,24 @@ export const metadata: Metadata = {
     "Next.js",
     "Pakistan",
   ],
-  authors: [{ name: "Lunar" }],
-  creator: "Lunar",
+  authors: [{ name: "Cipher" }],
+  creator: "Cipher",
   icons: {
     icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
     apple: [{ url: "/favicon.svg", type: "image/svg+xml" }],
   },
   openGraph: {
-    title: "Lunar — AI × Web Developer",
+    title: "Cipher — AI × Web Developer",
     description:
       "I build useful digital products with AI & the web. From prototype to deployment.",
     url: siteUrl,
-    siteName: "Lunar — Portfolio",
+    siteName: "Cipher — Portfolio",
     images: [
       {
         url: "/og.png",
         width: 1200,
         height: 630,
-        alt: "Lunar — AI × Web Developer",
+        alt: "Cipher — AI × Web Developer",
       },
     ],
     locale: "en_US",
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Lunar — AI × Web Developer",
+    title: "Cipher — AI × Web Developer",
     description:
       "I build useful digital products with AI & the web. From prototype to deployment.",
     images: ["/og.png"],
@@ -76,8 +76,7 @@ export const viewport: Viewport = {
 const personJsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
-  name: "Lunar",
-  alternateName: "Cipher",
+  name: "Cipher",
   jobTitle: "AI × Web Developer",
   url: siteUrl,
   address: {

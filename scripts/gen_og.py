@@ -36,9 +36,9 @@ d.text((86, 292), "digital products", font=font(bold, 96), fill=INK)
 d.text((86, 404), "with AI & the web.", font=font(bold, 96), fill=(150, 150, 150))
 
 # name plate bottom
-d.text((90, H - 92), "LUNAR", font=font(bold, 34), fill=INK)
-d.rectangle([232, H - 78, 244, H - 66], fill=BLUE)
-d.text((268, H - 88), "BASED IN PAKISTAN · BUILDING IN 2026", font=font(mono, 18), fill=MUTED)
+d.text((90, H - 92), "CIPHER", font=font(bold, 34), fill=INK)
+d.rectangle([246, H - 78, 258, H - 66], fill=BLUE)
+d.text((282, H - 88), "BASED IN PAKISTAN · BUILDING IN 2026", font=font(mono, 18), fill=MUTED)
 
 img.save("/home/z/my-project/public/og.png", "PNG", optimize=True)
 print("OG image saved")

@@ -6,7 +6,6 @@ import { Process, TechStack } from "@/components/portfolio/process-stack";
 import { Lab } from "@/components/portfolio/lab";
 import { Journey } from "@/components/portfolio/journey";
 import { Contact, Footer } from "@/components/portfolio/contact";
-import { Cursor } from "@/components/portfolio/cursor";
 
 export default function Home() {
   return (
@@ -17,7 +16,6 @@ export default function Home() {
       >
         Skip to work
       </a>
-      <Cursor />
       <Navbar />
       <main className="flex min-h-screen flex-col">
         <Hero />
