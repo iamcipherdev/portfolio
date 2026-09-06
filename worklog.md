@@ -94,3 +94,19 @@ Stage Summary:
 - Portfolio is now a premium personal site + real lightweight CMS: all content in SQLite, managed at /admin, public site reads DB directly (no rebuild)
 - Testimonials are honest reconstructed samples; replace each via admin and mark VERIFIED
 - Note: admin default password cipher2026 — change in /admin/settings
+
+---
+Task ID: fix-deploy-1
+Agent: Super Z (main)
+Task: Fix deployment failure (build error) + verify admin credentials
+
+Work Log:
+- Ran `next build` → found prerender error: /admin/login used useSearchParams() without Suspense boundary
+- Fixed src/app/admin/login/page.tsx: split LoginForm into child component wrapped in <Suspense> with spinner fallback
+- Verified build passes (all 16 static pages + all API routes compile)
+- Verified admin user 'cipher' exists in DB via Prisma
+- Tested login API: POST /api/admin/auth/login → {"ok":true}
+
+Stage Summary:
+- Build error resolved → deployment should now succeed
+- Admin credentials confirmed: username=cipher, password=cipher2026
