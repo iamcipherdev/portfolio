@@ -110,3 +110,23 @@ Work Log:
 Stage Summary:
 - Build error resolved → deployment should now succeed
 - Admin credentials confirmed: username=cipher, password=cipher2026
+
+---
+Task ID: cursor-github-1
+Agent: Super Z (main)
+Task: Remove custom cursor + push to GitHub
+
+Work Log:
+- Removed <Cursor /> and import from src/app/page.tsx
+- Removed "cursor: none" CSS block (has-custom-cursor) from globals.css
+- Deleted src/components/portfolio/cursor.tsx (no remaining references)
+- Build verified passing (16/16 static pages)
+- SECURITY: untracked .env + db/custom.db, added /db/ + *.db to .gitignore
+- SECURITY: rewrote git history via filter-branch to purge .env/db from all 8 commits, force-pushed
+- Created repo iamcipherdev/portfolio (public), pushed main (244 files)
+- Verified all 8 remote commit trees: no .env / *.db anywhere
+
+Stage Summary:
+- Native cursor everywhere; custom cursor fully removed
+- Repo live: https://github.com/iamcipherdev/portfolio
+- No credentials/content DB exposed on GitHub
