@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql" /* cloud-compatible: works on Vercel + local (embedded pg) */
   url      = env("DATABASE_URL")
 }
 
@@ -108,10 +108,11 @@ model MediaAsset {
   id           String   @id @default(cuid())
   filename     String
   originalName String
-  url          String   @unique
+  url          String   @unique // served via /api/media/[id] (DB-backed, Vercel-safe)
   mimeType     String
   size         Int
   width        Int      @default(0)
   height       Int      @default(0)
+  data         String   @default("") @db.Text // base64 image bytes (cloud-safe storage)
   createdAt    DateTime @default(now())
 }

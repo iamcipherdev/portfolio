@@ -44,7 +44,7 @@ export function MediaPickerField({
         <input
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          placeholder="/uploads/… or https://…"
+          placeholder="/api/media/… or https://…"
           className="h-10 w-full rounded-lg border border-[#1111111f] bg-white px-3 text-[13.5px] text-[#111111] outline-none transition-colors placeholder:text-[#aaaaaa] focus:border-[#4D6BFF]"
         />
         <Button

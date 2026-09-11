@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { guard, jsonError } from "@/lib/admin-api";
-import { unlink } from "fs/promises";
-import path from "path";
 
 type Ctx = { params: Promise<{ id: string }> };
 
@@ -41,10 +39,5 @@ export async function DELETE(_req: NextRequest, ctx: Ctx) {
   }
 
   await db.mediaAsset.delete({ where: { id } });
-  try {
-    await unlink(path.join(process.cwd(), "public", url));
-  } catch {
-    /* file already gone — ignore */
-  }
   return NextResponse.json({ ok: true });
 }

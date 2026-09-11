@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { guard, jsonError } from "@/lib/admin-api";
 import { randomUUID } from "crypto";
-import { mkdir, writeFile } from "fs/promises";
-import path from "path";
 import sharp from "sharp";
 
 /* GET /api/admin/media — list assets */
@@ -72,23 +70,27 @@ export async function POST(req: NextRequest) {
     return jsonError("Could not process this image.");
   }
 
-  const dir = path.join(process.cwd(), "public", "uploads");
-  await mkdir(dir, { recursive: true });
+  /* Cloud-safe storage: keep bytes in Postgres, serve via /api/media/[id].
+     (Vercel's filesystem is read-only/ephemeral — disk writes don't persist.) */
   const filename = `${Date.now()}-${randomUUID().slice(0, 8)}.${ext}`;
-  await writeFile(path.join(dir, filename), outBuffer);
-
-  const url = `/uploads/${filename}`;
   const asset = await db.mediaAsset.create({
     data: {
       filename,
       originalName: file.name.slice(0, 200),
-      url,
+      url: "pending", // replaced with the real id-based URL below
       mimeType: outMime,
       size: outBuffer.length,
       width,
       height,
+      data: Buffer.from(outBuffer).toString("base64"),
     },
   });
 
-  return NextResponse.json({ asset }, { status: 201 });
+  const url = `/api/media/${asset.id}`;
+  const updated = await db.mediaAsset.update({
+    where: { id: asset.id },
+    data: { url },
+  });
+
+  return NextResponse.json({ asset: updated }, { status: 201 });
 }
