@@ -7,7 +7,6 @@ import { Lab } from "@/components/portfolio/lab";
 import { Journey } from "@/components/portfolio/journey";
 import { Testimonials } from "@/components/portfolio/testimonials";
 import { Contact, Footer } from "@/components/portfolio/contact";
-import { Cursor } from "@/components/portfolio/cursor";
 import { getPublicData } from "@/lib/cms";
 
 /* Content is served from the CMS database (managed via /admin).
@@ -26,7 +25,6 @@ export default async function Home() {
       >
         Skip to work
       </a>
-      <Cursor />
       <Navbar profile={profile} />
       <main className="flex min-h-screen flex-col">
         <Hero profile={profile} />
